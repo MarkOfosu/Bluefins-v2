@@ -1,6 +1,4 @@
 import React from 'react';
-import Navbar from '../../../components/Navbar';
-import Footer from '../../../components/Footer';
 import Link from 'next/link';
 
 export const metadata = {
@@ -11,8 +9,7 @@ export const metadata = {
 export default function CompetitiveSchedulePage() {
   return (
     <main className="bg-white">
-      <Navbar />
-      <div className="pt-24 pb-16">
+      <div className="pb-16">
         <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto mb-12">
@@ -363,7 +360,6 @@ export default function CompetitiveSchedulePage() {
           </section>
         </div>
       </div>
-      <Footer />
     </main>
   );
 } 

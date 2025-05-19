@@ -1,5 +1,3 @@
-import Navbar from '../../../components/Navbar';
-import Footer from '../../../components/Footer';
 import Link from 'next/link';
 
 export const metadata = {
@@ -10,8 +8,7 @@ export const metadata = {
 export default function CompetitiveTeamPage() {
   return (
     <main className="bg-white">
-      <Navbar />
-      <div className="pt-24 pb-16"> {/* Add padding for fixed navbar */}
+      <div className="pb-16"> {/* Padding top handled by root layout */}
         <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto mb-12">
@@ -205,7 +202,7 @@ export default function CompetitiveTeamPage() {
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <span className="text-[#FFD700] mr-2">🏆</span>
-                    <span>Overall team champions at Ghana National Championships 2023</span>
+                    <span>Overall team champions at Ghana Swim League&apos;s Meet of Champions 2023</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-[#FFD700] mr-2">🏆</span>
@@ -448,7 +445,6 @@ export default function CompetitiveTeamPage() {
           </section>
         </div>
       </div>
-      <Footer />
     </main>
   );
 } 

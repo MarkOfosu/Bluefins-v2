@@ -1,35 +1,44 @@
-// src/app/page.tsx
-import Navbar from '../components/Navbar';
+import { Metadata } from 'next';
 import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import Programs from '../components/Programs';
-// import Testimonials from '@/components/Testimonials';
+import AchievementsSection from '@/components/AchievementsSection';
+import Testimonials from '@/components/Testimonials';
 import Contact from '../components/Contact';
-import Footer from '../components/Footer';
 import InstagramSection from '@/components/InstagramSection';
+import CoachesOverview from '@/components/CoachesOverview';
+import EventsSection from '@/components/EventsSection';
+import FacilitiesSection from '@/components/FacilitiesSection';
+
+export const metadata: Metadata = {
+  title: 'Ghana BlueFins Swim Club | World-Class Swimming Excellence',
+  description: 'Ghana BlueFins is the premier swim club in Accra, offering world-class competitive swimming, learn-to-swim programs, and elite coaching for swimmers of all ages and abilities.',
+};
 
 export default function Home() {
   return (
     <main className="bg-white">
-      <Navbar />
       <Hero />
       <AboutSection />
       <Programs />
-
-        {/* Instagram Feed */}
-   <InstagramSection 
-    username="ghanabluefins" 
-    title="Follow Us on Instagram"
-    subtitle="Stay updated with our latest events, achievements and more!"
-    bgColor="bg-white"
-    accentColor="bg-blue-500"
-    layout="expanded"
-    maxWidth="max-w-6xl"
-    showHeader={true}
-  />
+      <FacilitiesSection />
+      <CoachesOverview />
+      <AchievementsSection />
+      <EventsSection />
+      <Testimonials />
+      {/* Instagram Feed */}
+      <InstagramSection 
+        username="ghanabluefins" 
+        title="Follow Us on Instagram"
+        subtitle="Stay updated with our latest events, achievements and more!"
+        bgColor="bg-white"
+        accentColor="bg-blue-500"
+        layout="expanded"
+        maxWidth="max-w-6xl"
+        showHeader={true}
+      />
       {/* <Testimonials /> */}
       <Contact />
-      <Footer />
     </main>
   );
 }

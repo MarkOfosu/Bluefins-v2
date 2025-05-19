@@ -1,6 +1,5 @@
-import Navbar from '../../components/Navbar';
+
 import Location from '../../components/Location';
-import Footer from '../../components/Footer';
 
 export const metadata = {
   title: 'Our Locations | Ghana BlueFins Swim Club',
@@ -10,11 +9,9 @@ export const metadata = {
 export default function LocationsPage() {
   return (
     <main className="bg-white">
-      <Navbar />
       <div className="pt-24"> {/* Add padding to account for the fixed navbar */}
         <Location />
       </div>
-      <Footer />
     </main>
   );
 }

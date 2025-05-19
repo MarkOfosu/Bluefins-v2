@@ -14,13 +14,13 @@ interface ProgramProps {
 const ProgramCard = ({ title, description, icon, ageGroup, schedule, link, color }: ProgramProps) => {
   return (
     <div className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 group hover:-translate-y-1`}>
-      <div className={`${color} text-white p-4 flex items-center justify-between group-hover:bg-[#0A1738]`}>
+      <div className={`${color} text-white p-4 flex items-center justify-between group-hover:bg-primary`}>
         <h3 className="text-xl font-bold">{title}</h3>
         <div className="text-3xl">{icon}</div>
       </div>
 
       <div className="p-6">
-        <div className="mb-4 text-sm py-1 px-3 rounded-full bg-[#0A1738]/10 text-[#0A1738] inline-block">
+        <div className="mb-4 text-sm py-1 px-3 rounded-full bg-primary/10 text-primary-dark inline-block">
           {ageGroup}
         </div>
         
@@ -28,14 +28,14 @@ const ProgramCard = ({ title, description, icon, ageGroup, schedule, link, color
           {description}
         </p>
 
-        <div className="bg-[#0A1738]/5 p-3 rounded-lg mb-5">
-          <h4 className="font-semibold text-[#0A1738] mb-1 text-sm">SCHEDULE:</h4>
+        <div className="bg-primary/5 p-3 rounded-lg mb-5">
+          <h4 className="font-semibold text-primary-dark mb-1 text-sm">SCHEDULE:</h4>
           <p className="text-gray-700 text-sm">{schedule}</p>
         </div>
         
         <Link 
           href={link}
-          className="inline-block w-full bg-[#0A1738] hover:bg-[#0A1738]/90 text-white font-medium py-2 px-4 rounded-lg transition-colors text-center group-hover:bg-[#FFD700] group-hover:text-[#0A1738]"
+          className="inline-block w-full bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-lg transition-colors text-center group-hover:bg-secondary group-hover:text-primary-dark"
         >
           Learn More
         </Link>
@@ -47,40 +47,40 @@ const ProgramCard = ({ title, description, icon, ageGroup, schedule, link, color
 const Programs = () => {
   const programs = [
     {
-      title: "Learn-to-Swim",
-      description: "A comprehensive program introducing swimming fundamentals and water safety for beginners of all ages.",
-      icon: "🏊",
-      ageGroup: "Ages 4 and up",
-      schedule: "Mon, Wed, Fri: 3:30PM - 4:30PM",
-      link: "/programs/learn-to-swim",
-      color: "bg-blue-600"
+      title: "Kids Lessons",
+      description: "A comprehensive program introducing swimming fundamentals and water safety for children of all ability levels.",
+      icon: "🧒",
+      ageGroup: "Ages 4 to 12",
+      schedule: "Mon, Wed, Fri: 3:30PM - 4:30PM | Sat: 9:00AM - 12:00PM",
+      link: "/lessons/kids",
+      color: "bg-primary"
     },
     {
-      title: "Mini BlueFins",
-      description: "Early aquatic development for infants and toddlers, focusing on water comfort and foundational skills.",
-      icon: "👶",
-      ageGroup: "6 months to 3 years",
-      schedule: "Tue, Thu: 10:00AM - 10:45AM",
-      link: "/programs/mini-bluefins",
-      color: "bg-teal-600"
+      title: "Adult Lessons",
+      description: "Specialized swimming instruction for adults looking to learn to swim, improve technique, or overcome water anxiety.",
+      icon: "🏊",
+      ageGroup: "Ages 16 and up",
+      schedule: "Tue, Thu: 6:00PM - 7:00PM | Sat: 12:00PM - 2:00PM",
+      link: "/lessons/adults",
+      color: "bg-primary-dark"
+    },
+    {
+      title: "Private Lessons",
+      description: "One-on-one instruction tailored to your specific needs and goals with personalized attention from our expert coaches.",
+      icon: "👨‍🏫",
+      ageGroup: "All ages",
+      schedule: "Flexible scheduling based on availability",
+      link: "/private-lessons",
+      color: "bg-primary-light"
     },
     {
       title: "Competitive Team",
       description: "Advanced training for serious swimmers looking to excel in competitions at local and national levels.",
       icon: "🏆",
       ageGroup: "Ages 7 to 18",
-      schedule: "Mon-Fri: 5:00PM - 7:00PM",
-      link: "/programs/competitive-team",
+      schedule: "Mon-Fri: 5:00PM - 7:00PM | Sat: 7:00AM - 9:00AM",
+      link: "/competitive",
       color: "bg-indigo-600"
-    },
-    {
-      title: "Masters Swimming",
-      description: "Adult fitness swimming program for improved technique, endurance and optional competitive opportunities.",
-      icon: "🏅",
-      ageGroup: "Ages 18 and up",
-      schedule: "Mon, Wed, Fri: 6:00AM - 7:30AM",
-      link: "/programs/masters-team",
-      color: "bg-purple-600"
     }
   ];
 

@@ -1,7 +1,9 @@
 // src/app/components/Testimonials.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 interface TestimonialProps {
   quote: string;
@@ -12,49 +14,62 @@ interface TestimonialProps {
 
 const Testimonial = ({ quote, name, title, image }: TestimonialProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 relative border-l-4 border-[#FFD700]">
-      <div className="absolute -top-5 left-8 text-[#FFD700] text-6xl">&ldquo;</div>
-      <div className="pt-4">
-        <p className="text-gray-700 mb-6 relative z-10">{quote}</p>
+    <div className="bg-white rounded-xl shadow-xl p-8 relative border-l-4 border-secondary hover:border-l-8 transition-all duration-300 group">
+      <div className="absolute -top-6 left-8 text-secondary text-7xl opacity-50 group-hover:opacity-70 transition-opacity">&ldquo;</div>
+      <div className="pt-4 relative">
+        <span className="absolute top-0 right-0 text-primary-dark/5 text-9xl font-serif">&rdquo;</span>
+        <p className="text-gray-700 mb-8 relative z-10 italic">{quote}</p>
         <div className="flex items-center">
-          <div className="w-12 h-12 bg-[#0A1738] rounded-full flex items-center justify-center text-white font-bold mr-4">
+          <div className="relative w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white font-bold mr-4 border-2 border-secondary shadow-md overflow-hidden">
             {image ? (
-              <img src={image} alt={name} className="w-full h-full object-cover rounded-full" />
+              <Image 
+                src={image} 
+                alt={`Photo of ${name}`}
+                fill
+                sizes="56px"
+                className="object-cover rounded-full"
+              />
             ) : (
-              name.charAt(0)
+              <span className="text-xl">{name.charAt(0)}</span>
             )}
           </div>
           <div>
-            <h4 className="font-bold text-[#0A1738]">{name}</h4>
-            <p className="text-gray-600 text-sm">{title}</p>
+            <h4 className="font-bold text-primary-dark text-lg">{name}</h4>
+            <p className="text-gray-600">{title}</p>
           </div>
         </div>
       </div>
+      <div className="absolute bottom-0 left-0 h-1 bg-secondary w-0 group-hover:w-full transition-all duration-700"></div>
     </div>
   );
 };
 
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
   const testimonials = [
     {
-      quote: "Ghana BlueFins has transformed my children's confidence in the water. The coaches are exceptional and create a supportive environment where kids can thrive and develop their swimming skills.",
+      id: "t1",
+      quote: "Ghana BlueFins has transformed my children&apos;s confidence in the water. The coaches are exceptional and create a supportive environment where kids can thrive and develop their swimming skills.",
       name: "Sarah Mensah",
       title: "Parent of 2 swimmers"
     },
     {
-      quote: "As a former competitive swimmer, I'm impressed by the technical training at BlueFins. The coaches focus on proper technique first, which is crucial for long-term development and injury prevention.",
+      id: "t2",
+      quote: "As a former competitive swimmer, I&apos;m impressed by the technical training at BlueFins. The coaches focus on proper technique first, which is crucial for long-term development and injury prevention.",
       name: "David Agyeman",
       title: "Masters Team Member"
     },
     {
-      quote: "Joining the BlueFins Masters program has been one of the best decisions I've made for my health. It's challenging, social, and the coaching is personalized to help me improve.",
+      id: "t3",
+      quote: "Joining the BlueFins Masters program has been one of the best decisions I&apos;ve made for my health. It&apos;s challenging, social, and the coaching is personalized to help me improve.",
       name: "Grace Osei",
       title: "Adult Swimmer"
     },
     {
-      quote: "My son couldn't swim at all when we started, and now he's competing! The progress has been amazing, and it's all due to the patient, methodical teaching approach of the BlueFins coaches.",
+      id: "t4",
+      quote: "My son couldn&apos;t swim at all when we started, and now he&apos;s competing! The progress has been amazing, and it&apos;s all due to the patient, methodical teaching approach of the BlueFins coaches.",
       name: "Michael Darko",
       title: "Parent of competitive swimmer"
     },
@@ -63,7 +78,7 @@ const Testimonials = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide === testimonials.length - 1 ? 0 : prevSlide + 1));
-    }, 6000);
+    }, 8000);
     
     return () => clearInterval(interval);
   }, [testimonials.length]);
@@ -73,17 +88,20 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-20 bg-gray-50 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-b from-white to-blue-50 relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-[#FFD700]/5 -translate-x-1/3 -translate-y-1/3"></div>
-      <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-[#0A1738]/5 translate-x-1/3 translate-y-1/3"></div>
+      <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-secondary/5 -translate-x-1/3 -translate-y-1/3 backdrop-blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-primary-dark/5 translate-x-1/3 translate-y-1/3 backdrop-blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full bg-primary/5 -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"></div>
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-16">
-          <p className="text-[#FFD700] font-bold uppercase tracking-wider mb-2">What Our Swimmers Say</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#0A1738]">Testimonials</h2>
-          <div className="w-24 h-1 bg-[#FFD700] mx-auto mb-6"></div>
-          <p className="max-w-2xl mx-auto text-gray-600">
+          <p className="text-secondary font-bold uppercase tracking-wider mb-3">What Our Swimmers Say</p>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-primary-dark relative inline-block">
+            Testimonials
+            <span className="absolute -bottom-2 left-0 right-0 h-1 bg-secondary transform scale-x-75 mx-auto"></span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-gray-600 text-lg mt-6">
             Don&apos;t just take our word for it. Hear from our community of swimmers and parents about their experiences with Ghana BlueFins.
           </p>
         </div>
@@ -93,7 +111,7 @@ const Testimonials = () => {
           <div className="relative px-4 pb-12">
             {testimonials.map((testimonial, index) => (
               <div 
-                key={index}
+                key={testimonial.id}
                 className={`transition-opacity duration-500 ${
                   currentSlide === index ? 'opacity-100' : 'opacity-0 absolute inset-0 pointer-events-none'
                 }`}
@@ -108,12 +126,12 @@ const Testimonials = () => {
             
             {/* Carousel indicators */}
             <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 mt-8">
-              {testimonials.map((_, index) => (
+              {testimonials.map((testimonial, index) => (
                 <button
-                  key={index}
+                  key={testimonial.id}
                   onClick={() => goToSlide(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentSlide === index ? 'bg-[#FFD700] w-6' : 'bg-gray-300'
+                    currentSlide === index ? 'bg-secondary w-6' : 'bg-gray-300'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />

@@ -1,5 +1,4 @@
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+
 import Link from 'next/link';
 
 export const metadata = {
@@ -10,7 +9,6 @@ export const metadata = {
 export default function LessonsPage() {
   return (
     <main className="bg-white">
-      <Navbar />
       <div className="pt-24 pb-16"> {/* Add padding for fixed navbar */}
         <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
@@ -260,7 +258,6 @@ export default function LessonsPage() {
           </section>
         </div>
       </div>
-      <Footer />
     </main>
   );
 } 

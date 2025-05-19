@@ -1,231 +1,213 @@
-// src/components/Navbar.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import React from 'react';
+import Image from 'next/image';
+
+// Type definitions for better maintainability
+type DropdownItem = {
+  href: string;
+  label: string;
+  highlight?: boolean;
+};
+
+type NavItem = {
+  type: 'link' | 'dropdown';
+  label: string;
+  href?: string;
+  highlight?: boolean;
+  children?: DropdownItem[];
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [competitiveDropdownOpen, setCompetitiveDropdownOpen] = useState(false);
-  const [lessonsDropdownOpen, setLessonsDropdownOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  // Navigation items defined as a single data structure for better maintainability
+  const navItems: NavItem[] = [
+    {
+      type: 'link',
+      label: 'About',
+      href: '/about-us',
+    },
+    {
+      type: 'link',
+      label: 'Coaches',
+      href: '/coaches',
+    },
+    {
+      type: 'dropdown',
+      label: 'Swim Lessons',
+      highlight: true,
+      children: [
+        { href: '/lessons/kids', label: 'Kids Lessons', highlight: true },
+        { href: '/lessons/adults', label: 'Adult Lessons' },
+        { href: '/lessons/private', label: 'Private Lessons' },
+      ],
+    },
+    {
+      type: 'link',
+      label: 'Competitive',
+      href: '/programs/competitive-team',
+      highlight: true,
+    },
+    {
+      type: 'link',
+      label: 'Events',
+      href: '/events',
+      highlight: true,
+    },
+    {
+      type: 'link',
+      label: 'Locations',
+      href: '/locations',
+    },
+    {
+      type: 'link',
+      label: 'Pricing',
+      href: '/pricing',
+    },
+    {
+      type: 'link',
+      label: 'Contact',
+      href: '/contact',
+    },
+  ];
+
+  // Mobile submenu items
+  const aboutSubmenuItems = [
+    { href: '/about-us/philosophy', label: 'Our Philosophy' },
+    { href: '/about-us/coaches', label: 'Meet Our Coaches' },
+    { href: '/about-us/testimonials', label: 'Testimonials' },
+    { href: '/about-us/faq', label: 'FAQ' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const closeAllDropdowns = () => {
-    setCompetitiveDropdownOpen(false);
-    setLessonsDropdownOpen(false);
+  const toggleMobileDropdown = (dropdown: string) => {
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
 
-  const toggleCompetitiveDropdown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setLessonsDropdownOpen(false);
-    setCompetitiveDropdownOpen(!competitiveDropdownOpen);
-  };
-
-  const toggleLessonsDropdown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setCompetitiveDropdownOpen(false);
-    setLessonsDropdownOpen(!lessonsDropdownOpen);
-  };
+  // Helper components for cleaner JSX
+  const NavLink = ({ href, label, highlight = false }: 
+    { href: string; label: string; highlight?: boolean }) => (
+    <Link 
+      href={href} 
+      className={`${highlight ? 'text-[#E5BD4E] hover:text-white font-semibold' : 'text-white hover:text-[#E5BD4E]'} 
+        transition-colors text-lg relative py-2 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 
+        ${highlight ? 'after:bg-white' : 'after:bg-[#E5BD4E]'} after:transition-all hover:after:w-full
+        transform hover:scale-105 transition-transform duration-200`}
+    >
+      {label}
+    </Link>
+  );
 
   return (
     <header 
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-500 ${
         scrolled 
-          ? 'bg-[#0A1738] shadow-lg py-2' 
-          : 'bg-[#0A1738] py-4'
+          ? 'bg-[#0A22A9] shadow-lg py-2' 
+          : 'bg-[#0A22A9] py-3'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span 
-              className="text-2xl font-bold text-[#FFD700] transition-colors duration-300"
-            >
-              GHANA BLUEFINS
-            </span>
+          <Link href="/" className="flex items-center group">
+            <div className="h-12 md:h-14 relative w-auto">
+              <Image 
+                src="/logo2.jpg" 
+                alt="Ghana BlueFins" 
+                width={180}
+                height={56}
+                className="h-full w-auto object-contain"
+              />
+            </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            <Link 
-              href="/about-us" 
-              className="text-white hover:text-[#FFD700] transition-colors"
-            >
-              About Us
-            </Link>
-            
-            {/* Competitive Dropdown */}
-            <div className="relative">
-              <button 
-                onClick={toggleCompetitiveDropdown}
-                className="text-white hover:text-[#FFD700] transition-colors flex items-center"
-              >
-                Competitive
-                <svg 
-                  className={`ml-1 w-4 h-4 transition-transform ${competitiveDropdownOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </button>
-              
-              {competitiveDropdownOpen && (
-                <div className="absolute left-0 mt-2 py-2 w-56 bg-white rounded-md shadow-xl z-10">
-                  <Link 
-                    href="/competitive/programs" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
+          {/* Desktop Navigation - Increased spacing and text size */}
+          <nav className="hidden md:flex space-x-8 items-center">
+            {navItems.map((item, index) => (
+              item.type === 'link' ? (
+                <NavLink 
+                  key={index}
+                  href={item.href || '/'}
+                  label={item.label}
+                  highlight={item.highlight}
+                />
+              ) : (
+                // Dropdown menus with animations
+                <div key={index} className="relative group">
+                  <button 
+                    className={`${item.highlight ? 'text-[#E5BD4E] hover:text-white font-semibold' : 'text-white hover:text-[#E5BD4E]'} 
+                      transition-colors flex items-center text-lg py-2 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 
+                      ${item.highlight ? 'after:bg-white' : 'after:bg-[#E5BD4E]'} after:transition-all group-hover:after:w-full
+                      transform hover:scale-105 transition-transform duration-200`}
                   >
-                    Competitive Programs
-                  </Link>
-                  <Link 
-                    href="/competitive/schedule" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Training Schedule
-                  </Link>
-                  <Link 
-                    href="/competitive/team" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Meet the Team
-                  </Link>
-                  <Link 
-                    href="/competitive/achievements" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Achievements
-                  </Link>
-                  <Link 
-                    href="/team-policies" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Team Policies
-                  </Link>
+                    {item.label}
+                    <svg 
+                      className="ml-1 w-5 h-5 transition-transform duration-300 group-hover:rotate-180" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24" 
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </button>
+                  
+                  <div className="absolute left-0 mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="py-1 bg-white rounded-md shadow-xl border-t-2 border-[#E5BD4E] overflow-hidden">
+                      <div className="bg-[#0A22A9] py-2 px-4 mb-1">
+                        <h3 className="text-[#E5BD4E] font-semibold">Learn to Swim Programs</h3>
+                      </div>
+                      
+                      {item.children?.map((child, childIndex) => (
+                        <Link 
+                          key={childIndex}
+                          href={child.href} 
+                          className={`block px-4 py-3 text-base ${child.highlight ? 'font-semibold text-[#0A22A9]' : 'text-gray-700'} 
+                            hover:bg-gray-100 hover:text-[#0A22A9] transition-colors transform hover:translate-x-1 transition-transform duration-200`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-            
-            {/* Lessons Dropdown */}
-            <div className="relative">
-              <button 
-                onClick={toggleLessonsDropdown}
-                className="text-white hover:text-[#FFD700] transition-colors flex items-center"
-              >
-                Lessons
-                <svg 
-                  className={`ml-1 w-4 h-4 transition-transform ${lessonsDropdownOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </button>
-              
-              {lessonsDropdownOpen && (
-                <div className="absolute left-0 mt-2 py-2 w-56 bg-white rounded-md shadow-xl z-10">
-                  <Link 
-                    href="/lessons/kids" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Kids Learn-to-Swim
-                  </Link>
-                  <Link 
-                    href="/lessons/adults" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Adults Learn-to-Swim
-                  </Link>
-                  <Link 
-                    href="/lessons/private" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Private Lessons
-                  </Link>
-                  <Link 
-                    href="/schedule" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => closeAllDropdowns()}
-                  >
-                    Lesson Schedule
-                  </Link>
-                </div>
-              )}
-            </div>
-            
-            <Link 
-              href="/location" 
-              className="text-white hover:text-[#FFD700] transition-colors"
-            >
-              Locations/Schedules
-            </Link>
-            <Link 
-              href="/pricing" 
-              className="text-white hover:text-[#FFD700] transition-colors"
-            >
-              Pricing
-            </Link>
-            <Link 
-              href="/info" 
-              className="text-white hover:text-[#FFD700] transition-colors"
-            >
-              Info
-            </Link>
-            <Link 
-              href="/contact" 
-              className="text-white hover:text-[#FFD700] transition-colors"
-            >
-              Contact
-            </Link>
+              )
+            ))}
           </nav>
 
-          {/* Register Button */}
+          {/* Register Button - Larger with better animation */}
           <Link 
             href="/register"
-            className="hidden md:block bg-[#FFD700] text-[#0A1738] font-bold px-5 py-2 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg border-2 border-[#E5B100] hover:bg-[#E5B100]"
+            className="hidden md:block bg-[#E5BD4E] text-[#0A22A9] font-bold px-6 py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-xl hover:bg-white hover:text-[#0A22A9] relative overflow-hidden group transform hover:scale-105"
           >
-            Register Now
+            <span className="relative z-10">Register Now</span>
+            <span className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
           </Link>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu button - Larger */}
           <button 
-            className="md:hidden text-[#FFD700]"
+            className="md:hidden text-[#E5BD4E] p-2 rounded-md hover:bg-[#0A22A9]/80 transition-colors transform hover:scale-110 transition-transform duration-200"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
             {isOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
@@ -233,31 +215,19 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - Improved animation */}
       {isOpen && (
-        <div className="md:hidden bg-[#0A1738] border-t-2 border-[#FFD700] slide-in-bottom">
-          <div className="container mx-auto px-4 py-4 space-y-4">
-            <Link 
-              href="/about-us" 
-              className="block text-white hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              About Us
-            </Link>
-            
-            {/* Mobile Competitive Section */}
-            <div>
+        <div className="md:hidden bg-[#0A22A9] border-t border-[#E5BD4E]/30 animate-slideDown">
+          <div className="container mx-auto px-4 py-4 space-y-3">
+            {/* Mobile About Section */}
+            <div className="border-b border-blue-900">
               <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setCompetitiveDropdownOpen(!competitiveDropdownOpen);
-                  setLessonsDropdownOpen(false);
-                }}
-                className="flex justify-between items-center w-full text-white hover:text-[#FFD700] transition-colors"
+                onClick={() => toggleMobileDropdown('about')}
+                className="flex justify-between items-center w-full text-white hover:text-[#E5BD4E] transition-colors py-3 text-lg"
               >
-                <span>Competitive</span>
+                <span>About</span>
                 <svg 
-                  className={`ml-1 w-4 h-4 transition-transform ${competitiveDropdownOpen ? 'rotate-180' : ''}`} 
+                  className={`ml-1 w-5 h-5 transition-transform duration-300 ${activeDropdown === 'about' ? 'rotate-180' : ''}`} 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24" 
@@ -267,60 +237,31 @@ const Navbar = () => {
                 </svg>
               </button>
               
-              {competitiveDropdownOpen && (
-                <div className="pl-4 mt-2 border-l-2 border-[#FFD700] space-y-2">
-                  <Link 
-                    href="/competitive/programs" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Competitive Programs
-                  </Link>
-                  <Link 
-                    href="/competitive/schedule" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Training Schedule
-                  </Link>
-                  <Link 
-                    href="/competitive/team" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Meet the Team
-                  </Link>
-                  <Link 
-                    href="/competitive/achievements" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Achievements
-                  </Link>
-                  <Link 
-                    href="/team-policies" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Team Policies
-                  </Link>
+              {activeDropdown === 'about' && (
+                <div className="pl-4 mt-1 mb-2 border-l-2 border-[#E5BD4E] space-y-2 animate-fadeIn">
+                  {aboutSubmenuItems.map((item, index) => (
+                    <Link 
+                      key={index}
+                      href={item.href} 
+                      className="block text-white hover:text-[#E5BD4E] transition-colors py-2 text-base transform hover:translate-x-1 transition-transform duration-200"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
             
-            {/* Mobile Lessons Section */}
-            <div>
+            {/* Mobile Swim Lessons Section - HIGHLIGHTED */}
+            <div className="border-b border-blue-900">
               <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLessonsDropdownOpen(!lessonsDropdownOpen);
-                  setCompetitiveDropdownOpen(false);
-                }}
-                className="flex justify-between items-center w-full text-white hover:text-[#FFD700] transition-colors"
+                onClick={() => toggleMobileDropdown('swimLessons')}
+                className="flex justify-between items-center w-full text-[#E5BD4E] font-semibold hover:text-white transition-colors py-3 text-lg"
               >
-                <span>Lessons</span>
+                <span>Swim Lessons</span>
                 <svg 
-                  className={`ml-1 w-4 h-4 transition-transform ${lessonsDropdownOpen ? 'rotate-180' : ''}`} 
+                  className={`ml-1 w-5 h-5 transition-transform duration-300 ${activeDropdown === 'swimLessons' ? 'rotate-180' : ''}`} 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24" 
@@ -330,71 +271,50 @@ const Navbar = () => {
                 </svg>
               </button>
               
-              {lessonsDropdownOpen && (
-                <div className="pl-4 mt-2 border-l-2 border-[#FFD700] space-y-2">
+              {activeDropdown === 'swimLessons' && (
+                <div className="pl-4 mt-1 mb-2 border-l-2 border-[#E5BD4E] space-y-2 animate-fadeIn">
                   <Link 
-                    href="/lessons/kids" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
+                    href="/programs/swim-lessons" 
+                    className="block text-white font-medium hover:text-[#E5BD4E] transition-colors py-2 text-base transform hover:translate-x-1 transition-transform duration-200"
                     onClick={() => setIsOpen(false)}
                   >
-                    Kids Learn-to-Swim
+                    All Swim Programs
                   </Link>
-                  <Link 
-                    href="/lessons/adults" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Adults Learn-to-Swim
-                  </Link>
-                  <Link 
-                    href="/lessons/private" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Private Lessons
-                  </Link>
-                  <Link 
-                    href="/schedule" 
-                    className="block text-white hover:text-[#FFD700] transition-colors py-1"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Lesson Schedule
-                  </Link>
+                  {navItems.find(item => item.label === 'Swim Lessons')?.children?.map((item, index) => (
+                    <Link 
+                      key={index}
+                      href={item.href} 
+                      className="block text-white hover:text-[#E5BD4E] transition-colors py-2 text-base transform hover:translate-x-1 transition-transform duration-200"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
             
-            <Link 
-              href="/location" 
-              className="block text-white hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Locations/Schedules
-            </Link>
-            <Link 
-              href="/pricing" 
-              className="block text-white hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link 
-              href="/info" 
-              className="block text-white hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Info
-            </Link>
-            <Link 
-              href="/contact" 
-              className="block text-white hover:text-[#FFD700] transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </Link>
+            {/* Other mobile links */}
+            {navItems.filter(item => 
+              item.label !== 'About' && 
+              item.label !== 'Swim Lessons' && 
+              item.type === 'link'
+            ).map((item, index) => (
+              <Link 
+                key={index}
+                href={item.href || '/'}
+                className={`block ${item.highlight ? 'text-[#E5BD4E] font-semibold hover:text-white' : 'text-white hover:text-[#E5BD4E]'} 
+                  transition-colors py-3 text-lg border-b border-blue-900 transform hover:translate-x-1 transition-transform duration-200`}
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            
+            {/* Mobile Register button */}
             <Link 
               href="/register"
-              className="block bg-[#FFD700] text-[#0A1738] font-bold text-center py-2 rounded-lg transition-all border-2 border-[#E5B100] hover:bg-[#E5B100]"
+              className="block bg-[#E5BD4E] text-[#0A22A9] font-bold text-center py-4 rounded-lg transition-all mt-6 hover:bg-white text-lg transform hover:scale-105 transition-transform duration-200"
               onClick={() => setIsOpen(false)}
             >
               Register Now
@@ -405,5 +325,21 @@ const Navbar = () => {
     </header>
   );
 };
+
+// Add this CSS to your global styles file
+// @keyframes fadeIn {
+//   from { opacity: 0; transform: translateY(-10px); }
+//   to { opacity: 1; transform: translateY(0); }
+// }
+// @keyframes slideDown {
+//   from { opacity: 0; max-height: 0; }
+//   to { opacity: 1; max-height: 1000px; }
+// }
+// .animate-fadeIn {
+//   animation: fadeIn 0.3s ease-out forwards;
+// }
+// .animate-slideDown {
+//   animation: slideDown 0.4s ease-out forwards;
+// }
 
 export default Navbar;

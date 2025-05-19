@@ -1,0 +1,237 @@
+// src/components/CoachCard.tsx
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Coach } from '@/lib/coaches';
+
+interface CoachCardProps {
+  coach: Coach;
+  variant?: 'compact' | 'full';
+}
+
+export default function CoachCard({ coach, variant = 'compact' }: CoachCardProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const isFullVariant = variant === 'full';
+  
+  // Function to check if photo path exists and return it or a placeholder
+  const getPhotoSrc = () => {
+    return coach.photo || `https://ui-avatars.com/api/?name=${coach.name}&background=0078D4&color=FFD700&size=256`;
+  };
+  
+  // Get badge color based on coach type
+  const getBadgeColor = () => {
+    switch(coach.type) {
+      case 'head':
+        return 'bg-primary text-white';
+      case 'assistant':
+        return 'bg-primary-light text-white';
+      case 'guest':
+        return 'bg-secondary/80 text-primary-dark';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+  
+  // Create link href
+  const profileLink = `/coaches/${coach.id}`;
+  
+  // Function to create a unique key for each bio paragraph
+  const createBioParagraphKey = (index: number) => `${coach.id}-bio-paragraph-${index}`;
+
+  // Function to create a unique key for each skill
+  const createSkillKey = (index: number) => `${coach.id}-skill-${index}`;
+  
+  return (
+    <Link 
+      href={profileLink}
+      className={`block group ${isFullVariant ? 'w-full' : 'w-full max-w-sm mx-auto'}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className={`bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 border-b-4 border-secondary ${isHovered ? 'shadow-xl transform -translate-y-1' : ''}`}>
+        {isFullVariant ? (
+          // Full variant layout - horizontal for desktop
+          <div>
+            <div className="md:flex">
+              {/* Coach Photo - Full height on desktop */}
+              <div className="w-full md:w-1/3 bg-gradient-to-br from-primary to-primary-dark relative">
+                {coach.photo ? (
+                  <div className="h-80 md:h-full w-full relative overflow-hidden">
+                    <Image 
+                      src={getPhotoSrc()}
+                      alt={coach.photoAlt || `Photo of ${coach.name}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className={`object-cover transition-transform duration-500 ${isHovered ? 'scale-105' : ''}`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/80"></div>
+                    
+                    {/* Shimmering effect on hover */}
+                    <div className="absolute -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                  </div>
+                ) : (
+                  <div className="h-80 md:h-full flex items-center justify-center p-6 relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-10" style={{
+                      backgroundSize: '30px 30px',
+                      backgroundImage: `
+                        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+                      `
+                    }}></div>
+                    <div className="w-48 h-48 rounded-full bg-white/10 flex items-center justify-center border-4 border-secondary/30">
+                      <div className="text-6xl text-secondary font-bold">{coach.initials}</div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Name and title overlay on mobile only */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-primary via-primary/90 to-transparent md:hidden">
+                  <h3 className="text-2xl font-bold text-white mb-2">{coach.name}</h3>
+                  <div className={`inline-block px-4 py-1.5 rounded-full text-sm font-bold ${getBadgeColor()}`}>
+                    {coach.title}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Coach Details - Main content area */}
+              <div className="md:w-2/3 p-6 md:p-10 lg:p-12 relative">
+                {/* Name and title for desktop view */}
+                <div className="hidden md:block mb-6">
+                  <div className="flex items-center mb-2">
+                    <div className="h-1.5 w-10 bg-secondary rounded-full mr-3"></div>
+                    <h3 className="text-3xl lg:text-4xl font-bold text-primary group-hover:text-primary-light transition-colors">{coach.name}</h3>
+                  </div>
+                  <div className={`inline-block px-4 py-1.5 rounded-full text-sm font-bold ${getBadgeColor()} mt-2`}>
+                    {coach.title}
+                  </div>
+                </div>
+                
+                {/* Coach specialty if available */}
+                {coach.specialty && (
+                  <div className="mb-5 text-primary bg-blue-50 inline-block px-4 py-2 rounded-lg">
+                    <span className="font-medium">Specialty:</span> {coach.specialty}
+                  </div>
+                )}
+                
+                {/* Coach bio with expand/collapse */}
+                <div className="space-y-4 text-gray-700">
+                  {expanded ? (
+                    <>
+                      {coach.fullBio.map((paragraph, i) => (
+                        <p key={createBioParagraphKey(i)} className="leading-relaxed">{paragraph}</p>
+                      ))}
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setExpanded(false);
+                        }}
+                        className="text-primary font-medium hover:text-primary-light focus:outline-none mt-4 flex items-center transition-colors"
+                      >
+                        Read less
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
+                        </svg>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <p className="leading-relaxed">{coach.fullBio[0]}</p>
+                      {coach.fullBio.length > 1 && (
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setExpanded(true);
+                          }}
+                          className="text-primary font-medium hover:text-primary-light focus:outline-none mt-4 flex items-center transition-colors"
+                        >
+                          Read more
+                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                {/* Call-to-action */}
+                <div className="mt-6 pt-6 border-t border-blue-100 flex items-center">
+                  <span className="text-primary-light text-sm mr-2">View Full Profile</span>
+                  <svg className="w-5 h-5 text-secondary transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Compact variant - Card layout
+          <div>
+            <div className="relative h-60 overflow-hidden">
+              {/* Image or initials */}
+              {coach.photo ? (
+                <>
+                  <Image 
+                    src={getPhotoSrc()}
+                    alt={coach.photoAlt || `Photo of ${coach.name}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className={`object-cover transition-transform duration-500 ${isHovered ? 'scale-105' : ''}`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent"></div>
+                </>
+              ) : (
+                <div className="h-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center border-2 border-secondary">
+                    <div className="text-2xl text-secondary font-bold">{coach.initials}</div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Shimmering effect on hover */}
+              <div className="absolute -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+            </div>
+            
+            <div className="p-6">
+              {/* Coach badge/type */}
+              <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 ${getBadgeColor()}`}>
+                {coach.type.charAt(0).toUpperCase() + coach.type.slice(1)} Coach
+              </div>
+              
+              <h3 className="text-xl font-bold text-primary mb-1">{coach.name}</h3>
+              <p className="text-primary-light font-medium">{coach.title}</p>
+              
+              {coach.specialty && (
+                <div className="mt-3 mb-4 text-sm text-gray-600">
+                  <span className="font-medium">Specialty:</span> {coach.specialty}
+                </div>
+              )}
+              
+              <p className="mt-4 text-gray-700 line-clamp-3">{coach.shortBio}</p>
+              
+              <div className="mt-6 pt-4 border-t border-blue-50 flex justify-between items-center">
+                {/* Availability for private lessons */}
+                {coach.availableForPrivateLessons && (
+                  <div className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">
+                    Available for Private Lessons
+                  </div>
+                )}
+                
+                {/* View profile link */}
+                <div className="flex items-center text-primary text-sm font-medium group-hover:text-secondary transition-colors">
+                  View profile
+                  <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}

@@ -1,7 +1,7 @@
+
+
 // src/app/about-us/page.tsx
-import Navbar from '../../components/Navbar';
 import AboutSection from '../../components/AboutSection';
-import Footer from '../../components/Footer';
 
 export const metadata = {
   title: 'About Us | Ghana BlueFins Swim Club',
@@ -11,8 +11,8 @@ export const metadata = {
 export default function AboutUsPage() {
   return (
     <main className="bg-white">
-      <Navbar />
-      <div className="pt-24"> {/* Add padding to account for the fixed navbar */}
+
+      <div className="pt-24"> 
         <AboutSection />
         
         {/* Extended About Us content */}
@@ -21,7 +21,7 @@ export default function AboutUsPage() {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-6 text-[#0A1738]">Our History</h2>
               <p className="text-gray-700 mb-6">
-                Ghana BlueFins Swim Club was established in 2015 with a mission to develop swimming as both a competitive sport and essential life skill in Ghana. What began as a small group of dedicated swimmers has grown into one of Ghana's premier swimming clubs, with multiple training locations and programs catering to swimmers of all ages and abilities.
+                Ghana BlueFins Swim Club was established in 2015 with a mission to develop swimming as both a competitive sport and essential life skill in Ghana. What began as a small group of dedicated swimmers has grown into one of Ghana&apos;s premier swimming clubs, with multiple training locations and programs catering to swimmers of all ages and abilities.
               </p>
               <p className="text-gray-700 mb-6">
                 Our club has produced numerous national champions and record holders, with several swimmers representing Ghana in international competitions, including the African Swimming Championships and FINA events.
@@ -39,14 +39,13 @@ export default function AboutUsPage() {
               <p className="text-gray-700 mb-6">
                 Beyond competitive swimming, Ghana BlueFins is committed to making a positive impact in our community. We offer water safety programs, collaborate with schools to introduce swimming to more children, and provide scholarships to talented swimmers who might not otherwise have access to professional coaching.
                   </p>
-                  <p className="text-gray-700">
-                We're proud to be contributing to the growth of swimming in Ghana and helping to change the perception of swimming from a luxury activity to an essential life skill that everyone should have the opportunity to learn.
+              <p className="text-gray-700">
+                We&apos;re proud to be contributing to the growth of swimming in Ghana and helping to change the perception of swimming from a luxury activity to an essential life skill that everyone should have the opportunity to learn.
               </p>
             </div>
           </div>
         </section>
         </div>
-      <Footer />
     </main>
   );
 }

@@ -1,5 +1,4 @@
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+
 
 export const metadata = {
   title: 'Additional Information | Ghana BlueFins Swim Club',
@@ -9,7 +8,6 @@ export const metadata = {
 export default function InfoPage() {
   return (
     <main className="bg-white">
-      <Navbar />
       <div className="pt-24 pb-16"> {/* Add padding to account for the fixed navbar */}
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-5xl font-bold text-[#0A1738] mb-8 text-center">Additional Information</h1>
@@ -135,7 +133,6 @@ export default function InfoPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </main>
   );
 } 

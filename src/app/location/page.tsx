@@ -1,8 +1,6 @@
 // src/app/location/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 // Type definitions
 interface PoolFees {
@@ -497,10 +495,8 @@ const LocationPage: React.FC = () => {
 
   return (
     <main className="bg-gray-50">
-      <Navbar />
-      
       {/* Hero Section */}
-      <section className="relative pt-20 lg:pt-24">
+      <section className="relative lg:pt-0">
         <div className="absolute inset-0 h-[40vh] z-0">
           <div className="relative w-full h-full">
             <Image
@@ -658,8 +654,6 @@ const LocationPage: React.FC = () => {
           </div>
         </div>
       </section>
-      
-      <Footer />
     </main>
   );
 };

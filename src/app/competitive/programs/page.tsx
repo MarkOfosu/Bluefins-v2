@@ -1,5 +1,3 @@
-import Navbar from '../../../components/Navbar';
-import Footer from '../../../components/Footer';
 import Link from 'next/link';
 
 export const metadata = {
@@ -10,8 +8,7 @@ export const metadata = {
 export default function CompetitivePrograms() {
   return (
     <main className="bg-white">
-      <Navbar />
-      <div className="pt-24 pb-16"> {/* Add padding for fixed navbar */}
+      <div className="pb-16"> {/* Padding top handled by root layout */}
         <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto mb-12">
@@ -26,7 +23,7 @@ export default function CompetitivePrograms() {
             <div className="bg-gray-50 rounded-lg p-8 max-w-5xl mx-auto shadow-sm border border-gray-100">
               <h2 className="text-3xl font-bold mb-6 text-[#0A1738]">Our Competitive Program</h2>
               <p className="text-gray-700 mb-6">
-                The Ghana BlueFins competitive swim program offers a progressive training system for swimmers looking to develop their skills and compete at various levels, from local meets to national championships. Our experienced coaches provide technical guidance, race strategy, and personalized feedback in a structured, supportive environment.
+                The Ghana BlueFins competitive swim program offers a progressive training system for swimmers looking to develop their skills and compete at various levels, from local meets to the prestigious Meet of Champions. Our experienced coaches provide technical guidance, race strategy, and personalized feedback in a structured, supportive environment.
               </p>
               <p className="text-gray-700 mb-8">
                 Swimmers are placed in training groups based on their age, ability, and commitment level. Each group has specific training objectives, attendance expectations, and performance goals, with opportunities to advance as skills develop.
@@ -286,7 +283,6 @@ export default function CompetitivePrograms() {
           </section>
         </div>
       </div>
-      <Footer />
     </main>
   );
 } 

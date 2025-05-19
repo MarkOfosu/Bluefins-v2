@@ -1,5 +1,4 @@
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+
 
 export const metadata = {
   title: 'Contact Us | Ghana BlueFins Swim Club',
@@ -9,7 +8,6 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main className="bg-white">
-      <Navbar />
       <div className="pt-24 pb-16"> {/* Add padding for fixed navbar */}
         <div className="container mx-auto px-4 md:px-6">
           {/* Header */}
@@ -250,7 +248,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </main>
   );
 } 
