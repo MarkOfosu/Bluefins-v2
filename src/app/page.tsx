@@ -2,13 +2,9 @@ import { Metadata } from 'next';
 import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import Programs from '../components/Programs';
-import AchievementsSection from '@/components/AchievementsSection';
-import Testimonials from '@/components/Testimonials';
+import FacilitiesSection from '../components/FacilitiesSection';
+import CoachesOverview from '../components/CoachesOverview';
 import Contact from '../components/Contact';
-import InstagramSection from '@/components/InstagramSection';
-import CoachesOverview from '@/components/CoachesOverview';
-import EventsSection from '@/components/EventsSection';
-import FacilitiesSection from '@/components/FacilitiesSection';
 
 export const metadata: Metadata = {
   title: 'Ghana BlueFins Swim Club | World-Class Swimming Excellence',
@@ -23,21 +19,6 @@ export default function Home() {
       <Programs />
       <FacilitiesSection />
       <CoachesOverview />
-      <AchievementsSection />
-      <EventsSection />
-      <Testimonials />
-      {/* Instagram Feed */}
-      <InstagramSection 
-        username="ghanabluefins" 
-        title="Follow Us on Instagram"
-        subtitle="Stay updated with our latest events, achievements and more!"
-        bgColor="bg-white"
-        accentColor="bg-blue-500"
-        layout="expanded"
-        maxWidth="max-w-6xl"
-        showHeader={true}
-      />
-      {/* <Testimonials /> */}
       <Contact />
     </main>
   );
