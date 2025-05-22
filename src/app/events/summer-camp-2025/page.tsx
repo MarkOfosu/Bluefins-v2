@@ -5,12 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-// Summer camp schedule info - used in various places in the page
+// Summer camp schedule info - removed due to being unused
+/* Commented out to fix build error:
 const scheduleInfo = {
   days: "Monday - Friday",
   time: "1:30 PM - 3:30 PM",
   activity: "Camp Session"
 };
+*/
 
 // Summer camp sessions
 const campSessions = [

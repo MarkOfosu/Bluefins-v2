@@ -1,8 +1,8 @@
 // src/app/components/Testimonials.tsx
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+// import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 interface TestimonialProps {
@@ -46,7 +46,7 @@ const Testimonial = ({ quote, name, title, image }: TestimonialProps) => {
 
 const Testimonials = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  // const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
   const testimonials = [
     {
