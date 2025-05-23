@@ -1,0 +1,260 @@
+/* Gallery animations and styles */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Fade in animation for gallery items */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gallery-item {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Hover effects */
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-item img {
+  transition: transform 0.5s ease;
+}
+
+/* Keyboard navigation visual cues */
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  font-family: monospace;
+  transition: transform 0.15s ease-in-out, background-color 0.15s ease;
+}
+
+.key:hover, .key:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.key.active {
+  transform: scale(0.95);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Lightbox animations */
+.lightbox-enter {
+  opacity: 0;
+}
+.lightbox-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.lightbox-exit {
+  opacity: 1;
+}
+.lightbox-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* Image transition in lightbox */
+.lightbox-image-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.lightbox-image-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Thumbnail styles */
+.thumbnail {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.thumbnail.active {
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.thumbnail:hover:not(.active) {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Download button pulse animation */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.download-button {
+  animation: pulse 2s infinite;
+}
+
+/* Progress bar animation */
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.progress-animation {
+  animation: progress 0.5s ease;
+}
+
+/* Enhanced mobile styling */
+@media (max-width: 768px) {
+  .hide-scrollbar {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .hide-scrollbar > div > * {
+    scroll-snap-align: start;
+  }
+  
+  /* Touch indicator animation */
+  @keyframes touchHint {
+    0% { opacity: 0; transform: scale(0.9); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(0.9); }
+  }
+  
+  .touch-hint {
+    animation: touchHint 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.image-loading {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    rgba(255, 255, 255, 0.1) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Staggered animation for gallery items */
+.staggered-item:nth-child(odd) {
+  animation-delay: 0.1s;
+}
+
+.staggered-item:nth-child(even) {
+  animation-delay: 0.2s;
+}
+
+/* Category button effects */
+.category-button {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(10, 23, 56, 0.1);
+  transition: height 0.3s ease;
+  z-index: -1;
+}
+
+.category-button:hover::after {
+  height: 100%;
+}
+
+.category-button.active::after {
+  height: 100%;
+  background: rgba(10, 23, 56, 0.2);
+}
+
+/* Improved accessibility focus indicators */
+a:focus, button:focus {
+  outline: 2px solid rgba(10, 23, 56, 0.5);
+  outline-offset: 2px;
+}
+
+/* Caption toggle animation */
+@keyframes captionToggle {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.caption-visible {
+  animation: captionToggle 0.3s ease forwards;
+}
+
+/* Image reveal animation */
+@keyframes reveal {
+  0% { 
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.3;
+  }
+  100% { 
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.reveal-animation {
+  animation: reveal 0.7s ease-out forwards;
+}
+
+/* Mobile swipe hint */
+.swipe-hint-left::before,
+.swipe-hint-right::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%);
+  opacity: 0;
+}
+
+.swipe-hint-left::before {
+  left: 20px;
+  animation: pulseLeft 2s infinite;
+}
+
+.swipe-hint-right::after {
+  right: 20px;
+  animation: pulseRight 2s infinite;
+}
+
+@keyframes pulseLeft {
+  0% { opacity: 0; transform: translate(-10px, -50%); }
+  50% { opacity: 0.5; transform: translate(0, -50%); }
+  100% { opacity: 0; transform: translate(-10px, -50%); }
+}
+
+@keyframes pulseRight {
+  0% { opacity: 0; transform: translate(10px, -50%); }
+  50% { opacity: 0.5; transform: translate(0, -50%); }
+  100% { opacity: 0; transform: translate(10px, -50%); }
+}

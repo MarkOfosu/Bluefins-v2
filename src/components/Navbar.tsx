@@ -49,7 +49,7 @@ const Navbar = () => {
     {
       type: 'link',
       label: 'Competitive',
-      href: '/programs/competitive-team',
+      href: '/competitive/team',
       highlight: true,
     },
     {
